@@ -2,12 +2,12 @@
 
 const mongoose = require('mongoose');
 const Product = mongoose.model('Product');
+const ValidationContract = require('../validators/fluent.validator');
+const repository = require('../repositories/product-repository');
 
 exports.get = (req, res, next) => {
-    Product
-        .find({
-            active: true
-        }, 'title price slug')
+    repository
+        .get()
         .then(data => {
             res.status(200).send(data);
         }).catch(e => {
@@ -16,11 +16,8 @@ exports.get = (req, res, next) => {
 }
 
 exports.getBySlug = (req, res, next) => {
-    Product
-        .findOne({
-            slug: req.params.slug,
-            active: true
-        }, 'title description price slug tags')
+    repository
+        .getBySlug(req.params.slug)
         .then(data => {
             res.status(200).send(data);
         }).catch(e => {
@@ -28,8 +25,8 @@ exports.getBySlug = (req, res, next) => {
         });
 }
 exports.getById = (req, res, next) => {
-    Product
-        .findById(req.params.id)
+    repository
+        .getById(req.params.id)
         .then(data => {
             res.status(200).send(data);
         }).catch(e => {
@@ -49,6 +46,16 @@ exports.getByTag = (req, res, next) => {
         });
 }
 exports.post = (req, res, next) => {
+    let contract = new ValidationContract();
+    contract.hasMinLen(req.body.title,3, 'O título deve conter pelo menos 3 cacteres');
+    contract.hasMinLen(req.body.slug,3, 'O título deve conter pelo menos 3 cacteres');
+    contract.hasMinLen(req.body.description,3, 'O título deve conter pelo menos 3 cacteres');
+
+    //If characters is invalid
+    if (!contract.isValid()) {
+        res.status(400).send(contract.errors()).end();
+        return;
+    }
     var product = new Product(req.body);
     product
         .save()
