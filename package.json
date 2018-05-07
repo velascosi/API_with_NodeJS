@@ -1,0 +1,22 @@
+{
+  "name": "t-siparq",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./bin/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "^3.1.0",
+    "express": "^4.16.3",
+    "http": "0.0.0",
+    "mongoose": "^5.0.17",
+    "npm": "^6.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  }
+}
