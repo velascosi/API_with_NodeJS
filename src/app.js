@@ -12,6 +12,8 @@ mongoose.connect('mongodb://sil:sil@ds014648.mlab.com:14648/ndstr-sitarq');
 
 // Models connect
 const Product = require('./models/product');
+const Customer = require('./models/customer');
+const Order = require('./models/order');
 
 // route connect
 const indexRoute = require('./route/index-route');
